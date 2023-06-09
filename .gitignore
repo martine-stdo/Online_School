@@ -1,0 +1,5 @@
+web/node_modules/
+backend/.idea/
+backend/target/
+web/.vscode/
+web/public/
