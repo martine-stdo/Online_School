@@ -4,4 +4,8 @@
     <select id="selectUser" resultType="com.iss.edu.online.model.User">
         select * from user where username=#{username}
     </select>
+
+    <select id="selectById" resultType="com.iss.edu.online.model.User">
+        select * from user where id=#{id}
+    </select>
 </mapper>
