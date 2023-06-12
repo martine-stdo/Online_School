@@ -29,8 +29,6 @@ public interface EmployeeDao {
     
     List<Employee> queryEmployees(int start, int pageSize);
 
-    User login(User user);
-
     int count();
 }
 
