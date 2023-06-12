@@ -14,5 +14,4 @@ public class User {
     private Integer sex;
     private Integer age;
 
-
 }

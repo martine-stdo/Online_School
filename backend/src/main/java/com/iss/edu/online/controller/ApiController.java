@@ -34,19 +34,15 @@ public class ApiController {
     // http://localhost:8080/api/login
     @PostMapping("/login")
     public ResultResponse login(@RequestBody User user) {
-        ResultResponse response = new ResultResponse<>();
+        ResultResponse response = new ResultResponse();
         User currentUser = this.employeeDao.login(user);
         if (currentUser != null) {
             String token = UUID.randomUUID().toString();
             Map<String, Object> data = new HashMap<>();
             data.put("token", token);
             data.put("user", currentUser);
-            response.setCode(20000);
-            response.setMessage("Operate Success !");
-            response.setData(data);
         } else {
-            response.setCode(50000);
-            response.setMessage("Operate Failure !");
+
         }
         return response;
     }
@@ -99,16 +95,13 @@ public class ApiController {
     // http://localhost:8080/api/queryEmployees
     @GetMapping("/queryEmployees/{pageNum}/{pageSize}")
     public ResultResponse queryEmployees(@PathVariable("pageNum") int pageNum, @PathVariable("pageSize") int pageSize) {
-        ResultResponse response = new ResultResponse<>();
+        ResultResponse response = new ResultResponse();
         int start = (pageNum - 1) * pageSize;
         List<Employee> employees = this.employeeDao.queryEmployees(start, pageSize);
         int total = this.employeeDao.count();
         Map<String, Object> data = new HashMap<>();
         data.put("employees", employees);
         data.put("total", total);
-        response.setCode(20000);
-        response.setMessage("Operate Success !");
-        response.setData(data);
         return response;
     }
 
@@ -127,7 +120,7 @@ public class ApiController {
     // http://localhost:8080/api/deletes?empnos=95271,95272,95273,95274
     @GetMapping("/deletes")
     public String deletes(Integer[] empnos) {
-        int result = 1; // this.employeeDao.deletes(empnos);
+        int result = this.employeeDao.deletes(empnos);
         return result > 0 ? "Delete Success ..." : "Delete Error ...";
     }
 
