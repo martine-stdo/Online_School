@@ -3,6 +3,7 @@ package com.iss.edu.online.controller;
 
 import com.iss.edu.online.common.ResultResponse;
 import com.iss.edu.online.mapper.EmployeeDao;
+import com.iss.edu.online.mapper.UserDao;
 import com.iss.edu.online.model.Department;
 import com.iss.edu.online.model.Employee;
 import com.iss.edu.online.model.EmployeeVO;
@@ -26,6 +27,9 @@ public class ApiController {
     @Autowired
     EmployeeDao employeeDao;
 
+    @Autowired
+    UserDao userDao;
+
     /*
     {
         "username":"zhouzhuo",
@@ -38,7 +42,7 @@ public class ApiController {
         if(user == null){
             return ResultResponse.fail(-1,"参数错误!");
         }
-        User currentUser = this.employeeDao.login(user);
+        User currentUser = this.userDao.selectUser(user.getUsername());
         if (currentUser != null) {
             String token = UUID.randomUUID().toString();
             Map<String, Object> data = new HashMap<>();
