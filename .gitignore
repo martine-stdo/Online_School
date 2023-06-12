@@ -3,3 +3,4 @@ backend/.idea/
 backend/target/
 web/.vscode/
 web/public/
+backend/src/main/resources/application.properties
