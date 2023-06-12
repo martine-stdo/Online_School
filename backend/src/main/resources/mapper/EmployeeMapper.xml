@@ -58,7 +58,7 @@
                d.dname,
                d.loc
         from employee e
-                 left join department d on d.deptno = e.deptno
+                 left join department d on d.deptno = e.deptno limit #{pageSize} offset #{start}
     </select>
 
     <select id="queryByParams" parameterType="Employee" resultType="Employee">
@@ -116,7 +116,17 @@
     </select>
 
 
-    <select id="queryEmployeesVO" resultType="Map">
+
+    <select id="login" parameterType="User" resultType="User">
+        select *
+        from user
+        where username = #{username}
+          and password = #{password}
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from employee;
+    </select>
+    <select id="queryEmployeesVO" resultType="com.iss.edu.online.model.EmployeeVO">
         select e.ename,
                e.job,
                e.sal,
@@ -125,11 +135,5 @@
                  left join department d on d.deptno = e.deptno
     </select>
 
-    <select id="login" parameterType="User" resultType="User">
-        select *
-        from user
-        where username = #{username}
-          and password = #{password}
-    </select>
 
 </mapper>

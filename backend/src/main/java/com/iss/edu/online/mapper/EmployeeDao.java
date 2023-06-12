@@ -2,6 +2,7 @@ package com.iss.edu.online.mapper;
 
 import com.iss.edu.online.model.Department;
 import com.iss.edu.online.model.Employee;
+import com.iss.edu.online.model.EmployeeVO;
 import com.iss.edu.online.model.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -24,7 +25,7 @@ public interface EmployeeDao {
 
     List<Department> queryEmployeesByDeptno(int deptno);
 
-    List<Map<String, Object>> queryEmployeesVO();
+    List<EmployeeVO> queryEmployeesVO();
     
     List<Employee> queryEmployees(int start, int pageSize);
 
