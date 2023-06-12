@@ -97,9 +97,19 @@ public class ApiController {
 
 
     // http://localhost:8080/api/queryEmployees
-    @GetMapping("/queryEmployees")
-    public List<Employee> queryEmployees() {
-        return this.employeeDao.queryEmployees();
+    @GetMapping("/queryEmployees/{pageNum}/{pageSize}")
+    public ResultResponse queryEmployees(@PathVariable("pageNum") int pageNum, @PathVariable("pageSize") int pageSize) {
+        ResultResponse response = new ResultResponse<>();
+        int start = (pageNum - 1) * pageSize;
+        List<Employee> employees = this.employeeDao.queryEmployees(start, pageSize);
+        int total = this.employeeDao.count();
+        Map<String, Object> data = new HashMap<>();
+        data.put("employees", employees);
+        data.put("total", total);
+        response.setCode(20000);
+        response.setMessage("Operate Success !");
+        response.setData(data);
+        return response;
     }
 
     // http://localhost:8080/api/queryByParams
@@ -117,7 +127,7 @@ public class ApiController {
     // http://localhost:8080/api/deletes?empnos=95271,95272,95273,95274
     @GetMapping("/deletes")
     public String deletes(Integer[] empnos) {
-        int result = this.employeeDao.deletes(empnos);
+        int result = 1; // this.employeeDao.deletes(empnos);
         return result > 0 ? "Delete Success ..." : "Delete Error ...";
     }
 

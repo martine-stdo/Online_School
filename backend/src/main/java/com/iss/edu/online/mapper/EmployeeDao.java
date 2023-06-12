@@ -25,6 +25,12 @@ public interface EmployeeDao {
     List<Department> queryEmployeesByDeptno(int deptno);
 
     List<Map<String, Object>> queryEmployeesVO();
+    
+    List<Employee> queryEmployees(int start, int pageSize);
 
     User login(User user);
+
+    int count();
 }
+
+//    List<Employee> employees = this.employeeDao.queryEmployees(start, pageSize);
