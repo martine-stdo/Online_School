@@ -1,7 +1,7 @@
 <template>
   <div class="bg">
     <div class="bgOverlay"></div>
-    <el-row style="width: 100%">
+    <el-row style="width: 100%;">
       <el-col
         type="flex"
         justify="space-around"
@@ -12,7 +12,8 @@
         <div class="login-panel">
           <div class="content">
             <div style="width: 100%; text-align: center; margin-top: 40px">
-              <h1>登录</h1>
+              <h1 v-show="!isSignIn">登录</h1>
+              <h1 v-show="isSignIn">注册</h1>
               <el-input
                 v-model="user.username"
                 placeholder="用户名"
@@ -28,27 +29,55 @@
               >
                 <i slot="prefix" class="el-input__icon el-icon-key"></i>
               </el-input>
-              <el-input
-                v-show="false"
-                v-model="user.repeat_password"
-                placeholder="重复密码"
-                :show-password="true"
-                class="input"
-              >
-                <i slot="prefix" class="el-input__icon el-icon-lock"></i>
-              </el-input>
+              <el-collapse-transition>
+                <div v-show="isSignIn">
+                  <el-input
+                    v-model="user.confirmPassword"
+                    placeholder="重复密码"
+                    :show-password="true"
+                    class="input"
+                  >
+                    <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+                  </el-input>
+                </div>
+              </el-collapse-transition>
 
               <div class="login-items">
                 <el-checkbox class="checkbox">记住密码</el-checkbox>
               </div>
-              <div class="btn_link">
-                <el-button type="primary" class="btn_submit" @click="login">
+              <div class="btn_link" v-show="!isSignIn">
+                <el-button
+                  type="primary"
+                  class="btn_submit"
+                  @click="login"
+                >
                   <strong style="font-size: large">
-                    &nbsp;&nbsp;&nbsp;&nbsp;登录&nbsp;&nbsp;&nbsp;&nbsp;
+                    <i class="el-icon-arrow-left"></i>
+                    &nbsp;登录&nbsp;&nbsp;&nbsp;&nbsp;
                   </strong>
                 </el-button>
-                <el-button type="" class="btn_submit"
+                <el-button
+                  class="btn_submit"
+                  @click="isSignIn = true"
                   >没有账号？注册一个&nbsp;
+                  <i class="el-icon-arrow-right"></i>
+                </el-button>
+              </div>
+              <div class="btn_link" v-show="isSignIn">
+                <el-button
+                  type="primary"
+                  class="btn_submit"
+                  @click="register"
+                >
+                  <strong style="font-size: large">
+                    <i class="el-icon-arrow-left"></i>
+                    &nbsp;注册&nbsp;&nbsp;&nbsp;&nbsp;
+                  </strong>
+                </el-button>
+                <el-button
+                  class="btn_submit"
+                  @click="isSignIn = false"
+                  >已有账号？返回登录&nbsp;
                   <i class="el-icon-arrow-right"></i>
                 </el-button>
               </div>
@@ -66,10 +95,11 @@ export default {
   data() {
     return {
       checked: false,
+      isSignIn: false,
       user: {
         username: "",
         password: "",
-        repeat_password: "",
+        confirmPassword: "",
       },
     };
   },
@@ -91,11 +121,37 @@ export default {
         },
         (err) => {
           this.$notify.error({
-            title: "登录错误",
+            title: "登录失败",
             message: "服务器内部错误！",
           });
         }
       );
+    },
+    register() {
+      this.$axios
+        .post("/user/register", this.user)
+        .then((result) => {
+          let error_message = result.data.error_message;
+          if (error_message === "success") {
+          } else {
+            this.$notify.error({
+              title: "注册失败",
+              message: error_message,
+            });
+            throw "success";
+          }
+        })
+        .then(() => {
+          this.isSignIn = false;
+        })
+        .catch((err) => {
+          if (err !== "success") {
+            this.$notify.error({
+              title: "注册失败",
+              message: "服务器内部错误！",
+            });
+          }
+        });
     },
   },
 };
