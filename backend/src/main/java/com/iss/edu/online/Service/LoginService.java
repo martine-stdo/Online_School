@@ -31,13 +31,6 @@ public class LoginService {
         UserDetailsImpl userDetails = (UserDetailsImpl) authenticate.getPrincipal();
         //UserDetailsImpl类中现在属性user已经被赋值了 现在需要拿到这个信息 通过get方法
         User user = userDetails.getUser();
-        //走到这里说明最起码用户名没有问题 可以根据用户名获取到用户
-        if(!user.getPassword().equals(password)){
-            //开始校验密码
-            //如果这里密码验证失败 就直接返回了
-            return null;
-        }
-        //走到这里就说明用户名 密码验证都通过了 开始为用户构造唯一身份标识token
         String jwt = JwtUtil.createJWT(user.getId().toString());
         Map<String, String> map = new HashMap<>();
         map.put("error_message","success");
