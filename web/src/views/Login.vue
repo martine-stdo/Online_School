@@ -28,15 +28,18 @@
               >
                 <i slot="prefix" class="el-input__icon el-icon-key"></i>
               </el-input>
+              <el-input
+                v-show="false"
+                v-model="user.repeat_password"
+                placeholder="重复密码"
+                :show-password="true"
+                class="input"
+              >
+                <i slot="prefix" class="el-input__icon el-icon-lock"></i>
+              </el-input>
 
               <div class="login-items">
                 <el-checkbox class="checkbox">记住密码</el-checkbox>
-                <div>
-                  <i slot="prefix" class="el-input__icon el-icon-lock"></i>
-                  <el-button type="text" style="color: gray"
-                    >忘记密码?</el-button
-                  >
-                </div>
               </div>
               <div class="btn_link">
                 <el-button type="primary" class="btn_submit" @click="login">
@@ -66,22 +69,33 @@ export default {
       user: {
         username: "",
         password: "",
+        repeat_password: "",
       },
     };
   },
   methods: {
     login() {
-      this.$axios.post("/user/token", this.user).then((result) => {
-        let token = result.data.token;
-        localStorage.setItem("token", token);
-        this.$router.push("/index");
-      },
-      (err)=>{
-        this.$notify.error({
+      this.$axios.post("/user/token", this.user).then(
+        (result) => {
+          let error_message = result.data.error_message;
+          if (error_message === "success") {
+            let token = result.data.token;
+            localStorage.setItem("token", token);
+            this.$router.push("/index");
+          } else {
+            this.$notify.error({
+              title: "登录错误",
+              message: "密码或账号错误！",
+            });
+          }
+        },
+        (err) => {
+          this.$notify.error({
             title: "登录错误",
-            message: "密码或账号错误！",
+            message: "服务器内部错误！",
           });
-      });
+        }
+      );
     },
   },
 };
@@ -128,7 +142,21 @@ export default {
   backdrop-filter: blur(10px);
   box-shadow: rgba(0, 0, 0, 0.3) 0px -2px 0px inset,
     rgba(0, 0, 0, 0.4) 0px 1px 1px;
+  animation-duration: 1s;
+  animation-name: slide-in;
 }
+
+@keyframes slide-in {
+  from {
+    transform: translate(0, 10%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+
 .input {
   width: calc(100% - 50px);
   margin-top: 10px;
@@ -177,8 +205,7 @@ export default {
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
-  padding: 0 25px;
-  bottom: 20px;
+  padding: 0 25px 10px 25px;
 }
 .docked-at-corner {
   position: relative;
