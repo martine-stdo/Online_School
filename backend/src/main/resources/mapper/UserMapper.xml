@@ -8,4 +8,8 @@
     <select id="selectById" resultType="com.iss.edu.online.model.User">
         select * from user where id=#{id}
     </select>
+
+    <insert id="insertUser">
+        insert into user(username,password,avator) values(#{username},#{password},#{avator})
+    </insert>
 </mapper>
