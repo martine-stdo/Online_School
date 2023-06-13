@@ -10,7 +10,7 @@
             <span class="el-dropdown-link" style="color: white;">
               {{ user.nickname }}<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
-          <el-dropdown-menu v-slot="dropdown">
+          <el-dropdown-menu>
             <el-dropdown-item>个人中心</el-dropdown-item>
             <el-dropdown-item>退出登录</el-dropdown-item>
           </el-dropdown-menu>
@@ -40,7 +40,7 @@
       </el-aside>
       <el-main>
 
-        <router-view></router-view>
+        <router-view/>
 
       </el-main>
     </el-container>
