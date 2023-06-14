@@ -16,5 +16,6 @@ public class User {
     private String avator;
     private Integer sex;
     private Integer age;
+    private boolean isAdmin;
 
 }
