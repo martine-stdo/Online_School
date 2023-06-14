@@ -17,7 +17,7 @@ public class CheckAdmin {
         }
     }
 
-    private String extractJwt(String authorization) {
+    public String extractJwt(String authorization) {
         if (authorization != null && authorization.startsWith("Bearer ")) {
             return authorization.substring(7); // 去掉前缀部分，提取JWT字符串
         }
