@@ -12,4 +12,9 @@
     <insert id="insertUser">
         insert into user(username,password,avator) values(#{username},#{password},#{avator})
     </insert>
+    <insert id="insertCourse">
+        insert into courses(courseName,CourseDescription,CourseStartTime,
+                            CourseEndTime,TeacherID) values (#{courseName},#{courseDescription},
+                            #{courseStartTime},#{courseEndTime},#{teacherId})
+    </insert>
 </mapper>
