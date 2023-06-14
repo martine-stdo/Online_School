@@ -21,12 +21,12 @@ public class JwtUtil {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
-    public static String createJWT(String subject) {
-        JwtBuilder builder = getJwtBuilder(subject, null, getUUID());
+    public static String createJWT(String subject, boolean isAdmin) {
+        JwtBuilder builder = getJwtBuilder(subject, null, getUUID(),isAdmin);
         return builder.compact();
     }
 
-    private static JwtBuilder getJwtBuilder(String subject, Long ttlMillis, String uuid) {
+    private static JwtBuilder getJwtBuilder(String subject, Long ttlMillis, String uuid, boolean isAdmin) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         SecretKey secretKey = generalKey();
         long nowMillis = System.currentTimeMillis();
@@ -43,7 +43,8 @@ public class JwtUtil {
                 .setIssuer("sg")
                 .setIssuedAt(now)
                 .signWith(signatureAlgorithm, secretKey)
-                .setExpiration(expDate);
+                .setExpiration(expDate)
+                .claim("isAdmin", isAdmin);  // 添加 isAdmin 到 JWT 的 claims 中
     }
 
     public static SecretKey generalKey() {
