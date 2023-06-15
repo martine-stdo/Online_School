@@ -1,10 +1,10 @@
 package com.iss.edu.online.mapper;
 
-import com.iss.edu.online.model.Course;
-import com.iss.edu.online.model.Employee;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
 
+@Mapper
 public interface TeacherDao {
-
+    int deleteCourse(@Param("CourseID") Integer CourseID);
 }

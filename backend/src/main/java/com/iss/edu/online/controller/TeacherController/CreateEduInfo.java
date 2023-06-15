@@ -7,10 +7,7 @@ import com.iss.edu.online.utils.CheckAdmin;
 import com.iss.edu.online.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +19,7 @@ public class CreateEduInfo {
     private CheckAdmin checkAdmin;
     @Autowired
     private UserDao userDao;
-    @GetMapping("/createEduInfo")
+    @PostMapping ("/createEduInfo")
     public ResultResponse createEduInfo(@RequestHeader("Authorization") String authorization, @RequestBody Map<String, String> map) throws Exception {
         if (checkAdmin.isAdmin(authorization)) {
             //前端需要传回的字段有

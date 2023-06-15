@@ -14,4 +14,6 @@ public interface UserDao {
     int insertUser(User user);
 
     int insertCourse(Course course);
+
+    int deleteCourse(@Param("CourseID") Integer CourseID);
 }
