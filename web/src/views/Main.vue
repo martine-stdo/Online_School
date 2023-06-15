@@ -1,37 +1,43 @@
 <template>
   <div>
     <el-carousel :interval="4000" type="card" height="240px">
-      <el-carousel-item v-for="item in 6" :key="item">
-        <el-skeleton animated>
+      <el-carousel-item v-for="(item, i) in courses.slice(0, 5)">
+        <el-skeleton animated :loading="loading">
           <template slot="template">
-            <el-skeleton-item
-              variant="image"
-              style="width: 100%; height: 240px"
-            />
+            <el-skeleton-item variant="image" style="width: 100%; height: 240px" />
+          </template>
+          <template>
+            <div class="background" variant="image" :style="`background:${extractColorByName(item.courseName)}`">
+              {{ item.courseName }}
+            </div>
           </template>
         </el-skeleton>
       </el-carousel-item>
     </el-carousel>
+
     <span>
       <h2>所有课程</h2>
       <el-divider></el-divider>
     </span>
-    <div class="card-layout">
-      <el-card
-        class="card"
-        v-for="x in 8"
-        :key="x"
-        :body-style="{ padding: '0px' }"
-      >
-        <el-skeleton animated>
-          <template slot="template">
-            <el-skeleton-item variant="image" style="height: 180px" />
-          </template>
-          <template>
-            <div style="height: 180px">课程名称</div>
-          </template>
-        </el-skeleton>
-      </el-card>
+    <div>
+      <el-skeleton animated :loading="loading">
+        <template slot="template">
+          <div class="card-layout">
+            <el-card class="card" v-for="x in 8" :body-style="{ padding: '0px' }">
+              <el-skeleton-item variant="image" style="height: 180px" />
+            </el-card>
+          </div>
+        </template>
+        <template class="card-layout">
+          <div class="card-layout">
+            <el-card class="card" v-for="x in courses" :body-style="{ padding: '0px' }">
+              <div class="background" style="width: 100%; height: 180px" :style="`background:${extractColorByName(x.courseName)}`">
+                <div> {{ x.courseName }} </div>
+              </div>
+            </el-card>
+          </div>
+        </template>
+      </el-skeleton>
     </div>
   </div>
 </template>
@@ -39,11 +45,38 @@
 <script>
 export default {
   name: "Main",
-  created() {},
-  data() {
-    return {};
+  created() {
+    this.$axios
+      .post("/queryCourse", { pageNum: 1, pageSize: 6 })
+      .then((res) => {
+        this.courses = res.courses;
+      })
+      .then(() => {
+        this.loading = false;
+      });
   },
-  methods: {},
+  data() {
+    return {
+      loading: true,
+      courses: [
+        { courseName: "Test1" },
+        { courseName: "Test2" },
+        { courseName: "Test3" },
+        { courseName: "Test4" },
+        { courseName: "Test5" },
+      ]
+    };
+  },
+  methods: {
+    extractColorByName(name) {
+      var temp = [];
+      temp.push("#");
+      for (let index = 0; index < name.length; index++) {
+        temp.push(parseInt(name[index].charCodeAt(0), 10).toString(16));
+      }
+      return temp.slice(0, 5).join("").slice(0, 4);
+    },
+  },
 };
 </script>
 
@@ -60,5 +93,14 @@ export default {
 .card {
   flex-basis: 24%;
   margin-bottom: 15px;
+}
+
+.background {
+  width: 100%;
+  height: 240px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 </style>

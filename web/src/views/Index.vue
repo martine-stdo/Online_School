@@ -32,7 +32,7 @@
           align-items: center;
         "
       >
-        <el-avatar :style="`background:${extractColorByName('管理员')}`">
+        <el-avatar :style="`background:${extractColorByName(user.username)}`">
           {{ user.username }}
         </el-avatar>
         <div  style="width: 15px"></div>
@@ -65,7 +65,7 @@
             <i class="el-icon-data-analysis" />
             <span slot="title">我的课程</span>
           </el-menu-item>
-          <el-menu-item index="3" route="/admin">
+          <el-menu-item index="3" route="/admin" v-show="isAdmin">
             <i class="el-icon-data-analysis" />
             <span slot="title">我的班级</span>
           </el-menu-item>
