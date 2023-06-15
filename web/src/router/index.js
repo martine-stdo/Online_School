@@ -11,14 +11,24 @@ const routes = [
     },
     {
         path: '/index',
-        name: 'index',
+        name: 'Index',
         component: () => import('../views/Index.vue'),
         children: [
             {
-                path: '/students',
-                name: 'students',
-                component: () => import('../views/student/Students.vue')
+                path: '/main',
+                name: 'Main',
+                component: () => import('../views/Main.vue')
             },
+            {
+                path: '/courses',
+                name: 'Courses',
+                component: () => import('../views/Courses.vue')
+            },
+            {
+                path: '/admin',
+                name: 'Admin',
+                component: () => import('../views/Admin.vue')
+            }
         ]
     },
     /*{
