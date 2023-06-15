@@ -10,7 +10,7 @@ const routes = [
         component: () => import('../views/Login.vue')
     },
     {
-        path: '/index',
+        path: '/main',
         name: 'Index',
         component: () => import('../views/Index.vue'),
         children: [

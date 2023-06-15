@@ -2,41 +2,21 @@
   <div class="bg">
     <div class="bgOverlay"></div>
     <el-row style="width: 100%;">
-      <el-col
-        type="flex"
-        justify="space-around"
-        :xs="24"
-        :sm="{ span: 10, offset: 10 }"
-        :md="{ span: 8, offset: 12 }"
-      >
+      <el-col type="flex" justify="space-around" :xs="24" :sm="{ span: 10, offset: 10 }" :md="{ span: 8, offset: 12 }">
         <div class="login-panel">
           <div class="content">
             <div style="width: 100%; text-align: center; margin-top: 40px">
               <h1 v-show="!isSignIn">登录</h1>
               <h1 v-show="isSignIn">注册</h1>
-              <el-input
-                v-model="user.username"
-                placeholder="用户名"
-                class="input"
-              >
+              <el-input v-model="user.username" placeholder="用户名" class="input">
                 <i slot="prefix" class="el-input__icon el-icon-user"></i>
               </el-input>
-              <el-input
-                v-model="user.password"
-                placeholder="密码"
-                :show-password="true"
-                class="input"
-              >
+              <el-input v-model="user.password" placeholder="密码" :show-password="true" class="input">
                 <i slot="prefix" class="el-input__icon el-icon-key"></i>
               </el-input>
               <el-collapse-transition>
                 <div v-show="isSignIn">
-                  <el-input
-                    v-model="user.confirmPassword"
-                    placeholder="重复密码"
-                    :show-password="true"
-                    class="input"
-                  >
+                  <el-input v-model="user.confirmPassword" placeholder="重复密码" :show-password="true" class="input">
                     <i slot="prefix" class="el-input__icon el-icon-lock"></i>
                   </el-input>
                 </div>
@@ -46,38 +26,24 @@
                 <el-checkbox class="checkbox">记住密码</el-checkbox>
               </div>
               <div class="btn_link" v-show="!isSignIn">
-                <el-button
-                  type="primary"
-                  class="btn_submit"
-                  @click="login"
-                >
+                <el-button type="primary" class="btn_submit" @click="login">
                   <strong style="font-size: large">
                     <i class="el-icon-arrow-left"></i>
                     &nbsp;登录&nbsp;&nbsp;&nbsp;&nbsp;
                   </strong>
                 </el-button>
-                <el-button
-                  class="btn_submit"
-                  @click="isSignIn = true"
-                  >没有账号？注册一个&nbsp;
+                <el-button class="btn_submit" @click="isSignIn = true">没有账号？注册一个&nbsp;
                   <i class="el-icon-arrow-right"></i>
                 </el-button>
               </div>
               <div class="btn_link" v-show="isSignIn">
-                <el-button
-                  type="primary"
-                  class="btn_submit"
-                  @click="register"
-                >
+                <el-button type="primary" class="btn_submit" @click="register">
                   <strong style="font-size: large">
                     <i class="el-icon-arrow-left"></i>
                     &nbsp;注册&nbsp;&nbsp;&nbsp;&nbsp;
                   </strong>
                 </el-button>
-                <el-button
-                  class="btn_submit"
-                  @click="isSignIn = false"
-                  >已有账号？返回登录&nbsp;
+                <el-button class="btn_submit" @click="isSignIn = false">已有账号？返回登录&nbsp;
                   <i class="el-icon-arrow-right"></i>
                 </el-button>
               </div>
@@ -110,8 +76,22 @@ export default {
           let error_message = result.data.error_message;
           if (error_message === "success") {
             let token = result.data.token;
-            localStorage.setItem("token", token);
-            this.$router.push("/index");
+            localStorage.setItem("token", 'Bearer ' + token);
+
+            // 发送 GET 请求获取用户信息
+            this.$axios.get('http://localhost:3001/user/info', )
+              .then(response => {
+                if (response.code === 200) {
+                  this.user = response.data; // 保存用户信息到组件的 user 对象
+                  localStorage.setItem("user", JSON.stringify(this.user));
+                } else {
+                  console.log('获取用户信息失败');
+                }
+              })
+              .catch(error => {
+                console.log('获取用户信息失败', error);
+              });
+            this.$router.push("/main");
           } else {
             this.$notify.error({
               title: "登录错误",
@@ -126,6 +106,7 @@ export default {
           });
         }
       );
+
     },
     register() {
       this.$axios
@@ -170,9 +151,9 @@ export default {
   width: 100%;
 
   /* Background */
-  background: url("https://api.aqcoder.cn/random") center center / cover
-    no-repeat;
+  background: url("https://api.aqcoder.cn/random") center center / cover no-repeat;
 }
+
 .bgOverlay {
   opacity: 1;
   position: absolute;
@@ -181,12 +162,11 @@ export default {
   left: 0;
   right: 0;
   transition: opacity 0.3s linear 0s;
-  background-image: radial-gradient(
-      rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.5) 100%
-    ),
+  background-image: radial-gradient(rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.5) 100%),
     radial-gradient(rgba(255, 255, 255, 0) 33%, rgba(255, 255, 255, 0.3) 166%);
 }
+
 .login-panel {
   /* 阴影/低阴影 */
   box-shadow: 0px 3px 8px 0px rgba(0, 0, 0, 0.2);
@@ -207,6 +187,7 @@ export default {
     transform: translate(0, 10%);
     opacity: 0;
   }
+
   to {
     transform: translate(0, 0);
     opacity: 1;
@@ -217,6 +198,7 @@ export default {
   width: calc(100% - 50px);
   margin-top: 10px;
 }
+
 .center {
   display: flex;
   align-items: center;
@@ -251,11 +233,13 @@ export default {
 .checkbox {
   text-align: left;
 }
+
 .btn_submit {
   box-shadow: rgba(0, 0, 0, 0.15) 0px -2px 0px inset,
     rgba(0, 0, 0, 0.4) 0px 1px 1px;
   border: 0;
 }
+
 .btn_link {
   width: 100%;
   display: flex;
@@ -263,9 +247,11 @@ export default {
   box-sizing: border-box;
   padding: 0 25px 10px 25px;
 }
+
 .docked-at-corner {
   position: relative;
 }
+
 .docked-at-corner__docker {
   position: absolute;
   right: 0;

@@ -49,15 +49,19 @@ export default {
     this.$axios
       .post("/queryCourse", { pageNum: 1, pageSize: 6 })
       .then((res) => {
-        this.courses = res.courses;
+        this.loading = true;
+        this.courses = res.data.courses;
+        console.log(this.courses);
       })
       .then(() => {
         this.loading = false;
+      }).catch((err) => {
+        this.loading = true;
       });
   },
   data() {
     return {
-      loading: true,
+      loading: false,
       courses: [
         { courseName: "Test1" },
         { courseName: "Test2" },
