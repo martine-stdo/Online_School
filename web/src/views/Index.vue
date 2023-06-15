@@ -2,7 +2,7 @@
   <el-container style="width: 100%;height: 100%;">
     <el-header style="height: 70px;background-color: black;
     display: flex;justify-content: space-between;align-items: center;">
-      <img src="../assets/images/logo.png" style="object-fit: contain;">
+      <img src="../assets/images/logo.png" style="object-fit: contain; width: 40px;height: 40px">
       <div style="width: 8%;height: 100%;display: flex;justify-content: space-around;align-items: center;">
         <!--        <el-avatar size="medium" src="/assets/images/zz.jpg" />-->
         <img src="../assets/images/zz.jpg" style="object-fit: contain;width: 40px;height: 40px;border-radius:50%;"/>
@@ -51,7 +51,7 @@
 export default {
   name: "index",
   created() {
-    this.user = JSON.parse(localStorage.getItem("user"));
+    // this.user = JSON.parse(localStorage.getItem("user"));
   },
   data() {
     return {
