@@ -9,6 +9,7 @@ import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -30,8 +31,8 @@ public class CreateEduInfo {
             Course course = new Course();
             course.setCourseName(map.get("courseName"));
             course.setCourseDescription(map.get("courseDescription"));
-            course.setCourseStartTime(LocalDateTime.parse(map.get("courseStartTime"), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-            course.setCourseEndTime(LocalDateTime.parse(map.get("courseEndTime"), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            course.setCourseStartTime(LocalDate.parse(map.get("courseStartTime"), DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay());
+            course.setCourseEndTime(LocalDate.parse(map.get("courseEndTime"), DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay());
             String jwt = checkAdmin.extractJwt(authorization);
             // 从JWT中提取用户ID
             Claims claims = JwtUtil.parseJWT(jwt);

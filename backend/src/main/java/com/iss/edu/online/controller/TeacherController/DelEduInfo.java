@@ -18,7 +18,7 @@ public class DelEduInfo {
     private TeacherDao teacherDao;
 
     @PostMapping ("/delEduInfo")
-    public ResultResponse createEduInfo(@RequestHeader("Authorization") String authorization, @RequestParam("CourseID") Integer CourseID) {
+    public ResultResponse createEduInfo(@RequestHeader("Authorization") String authorization, @RequestParam Integer CourseID) {
         if (checkAdmin.isAdmin(authorization)) {
             //删除课程业务
             //删除学生选课表的信息
