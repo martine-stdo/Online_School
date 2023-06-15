@@ -20,4 +20,5 @@
                             CourseEndTime,TeacherID) values (#{courseName},#{courseDescription},
                                                              #{courseStartTime},#{courseEndTime},#{teacherId})
     </insert>
+
 </mapper>
