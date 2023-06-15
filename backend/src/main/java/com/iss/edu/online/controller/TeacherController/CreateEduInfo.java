@@ -1,4 +1,4 @@
-package com.iss.edu.online.controller.Teacher;
+package com.iss.edu.online.controller.TeacherController;
 
 import com.iss.edu.online.common.ResultResponse;
 import com.iss.edu.online.mapper.UserDao;
