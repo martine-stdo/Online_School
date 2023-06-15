@@ -1,4 +1,4 @@
-package com.iss.edu.online.controller;
+package com.iss.edu.online.controller.UserController;
 
 import com.iss.edu.online.Service.LoginService;
 import com.iss.edu.online.common.ResultResponse;

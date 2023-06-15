@@ -9,12 +9,8 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class User {
+public class StudentCourse {
     private Integer id;
-    private String username;
-    private String password;
-    private String avator;
-    private Integer sex;
-    private Integer age;
-    private boolean isAdmin;
+    private Integer studentId;
+    private Integer courseId;
 }

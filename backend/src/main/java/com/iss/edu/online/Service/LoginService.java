@@ -36,7 +36,7 @@ public class LoginService {
             UserDetailsImpl userDetails = (UserDetailsImpl) authenticate.getPrincipal();
             // UserDetailsImpl类中现在属性user已经被赋值了，现在需要拿到这个信息，通过get方法
             User user = userDetails.getUser();
-            String jwt = JwtUtil.createJWT(user.getId().toString());
+            String jwt = JwtUtil.createJWT(user.getId().toString(), user.isAdmin());
             map.put("error_message", "success");
             map.put("token", jwt);
         } catch (Exception e) {

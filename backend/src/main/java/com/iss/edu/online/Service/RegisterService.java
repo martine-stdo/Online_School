@@ -65,7 +65,7 @@ private UserDao userDao;
 
         String encodePassword = passwordEncoder.encode(password);
         String avator = "https://s1.ax1x.com/2023/03/06/ppZmZ36.jpg";
-        User Newuser = new User(10,username,encodePassword,avator,null,null);
+        User Newuser = new User(10,username,encodePassword,avator,null,null,false);
         userDao.insertUser(Newuser);
 
         map.put("error_message","success");
