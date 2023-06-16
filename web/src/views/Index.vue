@@ -31,9 +31,8 @@
           justify-content: space-around;
           align-items: center;
         "
-      >
-        <el-avatar :style="`background:${extractColorByName(user.username)}`">
-          {{ user.username }}
+      >s
+        <el-avatar :src="`${this.user.avator}`">
         </el-avatar>
         <div  style="width: 15px"></div>
         <el-dropdown>
@@ -82,7 +81,7 @@
 export default {
   name: "index",
   created() {
-    // this.user = JSON.parse(localStorage.getItem("user"));
+    this.user = JSON.parse(localStorage.getItem("user"));
   },
   data() {
     return {
