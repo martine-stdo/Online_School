@@ -7,7 +7,8 @@
                c.CourseDescription,
                c.CourseStartTime,
                c.CourseEndTime,
-               u.username
+               u.username,
+               c.TeacherID
         from courses c
                 left join user u on c.TeacherID = u.id limit #{pageSize} offset #{start}
 
