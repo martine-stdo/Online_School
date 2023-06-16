@@ -48,11 +48,11 @@ export default {
   name: "Main",
   created() {
     setTimeout(this.queryCourses, 50);
-
+    setTimeout(()=>{this.loading = true}, 25);
   },
   data() {
     return {
-      loading: true,
+      loading: false,
       courses: [
         { courseName: "Test1" },
         { courseName: "Test2" },
