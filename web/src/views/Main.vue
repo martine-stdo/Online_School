@@ -31,7 +31,8 @@
         <template class="card-layout">
           <div class="card-layout">
             <el-card class="card" v-for="x in courses" :body-style="{ padding: '0px' }">
-              <div class="background" style="width: 100%; height: 180px" :style="`background:${extractColorByName(x.courseName)}`">
+              <div class="background" style="width: 100%; height: 180px"
+                :style="`background:${extractColorByName(x.courseName)}`">
                 <div> {{ x.courseName }} </div>
               </div>
             </el-card>
@@ -46,22 +47,12 @@
 export default {
   name: "Main",
   created() {
-    this.$axios
-      .post("/queryCourse", { pageNum: 1, pageSize: 6 })
-      .then((res) => {
-        this.loading = true;
-        this.courses = res.data.courses;
-        console.log(this.courses);
-      })
-      .then(() => {
-        this.loading = false;
-      }).catch((err) => {
-        this.loading = true;
-      });
+    setTimeout(this.queryCourses, 50);
+
   },
   data() {
     return {
-      loading: false,
+      loading: true,
       courses: [
         { courseName: "Test1" },
         { courseName: "Test2" },
@@ -80,6 +71,18 @@ export default {
       }
       return temp.slice(0, 5).join("").slice(0, 4);
     },
+    queryCourses(){
+      this.$axios
+      .post("/queryCourse", { pageNum: 1, pageSize: 6 })
+      .then((res) => {
+        this.loading = true;
+        this.courses = res.data.courses;
+        console.log(this.courses);
+      })
+      .then(() => {
+        this.loading = false;
+      });
+    }
   },
 };
 </script>
