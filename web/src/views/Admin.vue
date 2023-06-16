@@ -47,11 +47,13 @@
         <el-button type="primary" @click="submitCourse">确定</el-button>
       </span>
     </el-dialog>
-    <div style="width: 100%; display: flex;justify-content: center;">
-
+    <div style="width: 100%; display: flex;justify-content: center; align-items: center;">
+      <div>
+        <span style="padding-right: 7px; color: gray;font-size: small;">共 {{totalPage}} 页</span>
+      </div>
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-        :page-sizes="[5, 10, 15, 20]" :page-size="pageSize" :total="total"
-        layout="total, sizes, prev, pager, next, jumper" />
+        :page-sizes="[5, 10, 15, 20]" :page-size="pageSize"
+        layout=" sizes, prev, pager, next, jumper" />
     </div>
 
   </div>
@@ -67,7 +69,7 @@ export default {
     return {
       currentPage: 1,
       pageSize: 5,
-      total: 0,
+      totalPage: 0,
       keyword: '',
       tableData: [],
       showDialog: false,
@@ -82,17 +84,18 @@ export default {
   methods: {
     handleSizeChange(pageSize) {
       console.log("pageSize:", pageSize)
-      this.queryEmployees(this.currentPage, pageSize)
+      this.queryCourses(this.currentPage, pageSize)
     },
     handleCurrentChange(pageNum) {
       console.log("pageNum:", pageNum)
-      this.queryEmployees(pageNum, this.pageSize)
+      this.queryCourses(pageNum, this.pageSize)
     },
     queryCourses(currentPage, pageSize) {
       this.$axios
         .post("/queryCourse", { pageNum: currentPage, pageSize: pageSize })
         .then((res) => {
           this.tableData = res.data.courses;
+          this.totalPage = res.data.totalPage;
         })
     },
     deletes() {
@@ -103,7 +106,7 @@ export default {
       }
       ids = ids.substring(1);   // 1,2,3,4,5,6....
       this.$axios.post('/delEduInfo?CourseID=' + ids).then(result => {
-        this.$message(result);
+        this.$message(result.data);
         this.queryCourses(1, this.pageSize);
       });
     },
@@ -120,7 +123,7 @@ export default {
       this.$axios.post('/createEduInfo', this.newCourse)
         .then(response => {
           this.$message({
-            message: 'Course created successfully',
+            message: '课程创建成功！',
             type: 'success'
           });
           this.newCourse = {
@@ -134,7 +137,7 @@ export default {
         })
         .catch(error => {
           this.$message({
-            message: 'Failed to create course',
+            message: '课程创建失败',
             type: 'error'
           });
           console.log(error);

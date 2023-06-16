@@ -74,7 +74,7 @@ export default {
     },
     queryCourses(){
       this.$axios
-      .post("/queryCourse", { pageNum: 1, pageSize: 6 })
+      .post("/queryCourse", { pageNum: 1, pageSize: 999 })
       .then((res) => {
         this.loading = true;
         this.courses = res.data.courses;
