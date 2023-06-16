@@ -10,24 +10,48 @@
         </el-form-item>
       </el-form>
       <div>
-        <el-button type="primary">创建课程</el-button>
+        <el-button type="primary" @click="createCourse">创建课程</el-button>
         <el-button type="danger" @click="deletes">删除课程</el-button>
       </div>
     </el-row>
 
     <el-table ref="studentTable" :data="tableData" border style="width: 100%">
-      <el-table-column type="selection" width="55"/>
-      <el-table-column prop="courseId" label="课程编号" width="155"/>
-      <el-table-column prop="courseName" label="课程名名" width="250"/>
-      <el-table-column prop="courseDescription" label="描述" width="250"/>
-      <el-table-column prop="courseStartTime" label="开始时间" width="250"/>
-      <el-table-column prop="courseEndTime" label="结束时间" width="250"/>
+      <el-table-column type="selection" width="55" />
+      <el-table-column prop="courseId" label="课程编号" width="155" />
+      <el-table-column prop="courseName" label="课程名名" width="250" />
+      <el-table-column prop="courseDescription" label="描述" width="250" />
+      <el-table-column prop="courseStartTime" label="开始时间" width="250" />
+      <el-table-column prop="courseEndTime" label="结束时间" width="250" />
     </el-table>
+
+    <el-dialog title="创建课程" :visible.sync="showDialog">
+      <el-form :model="newCourse">
+        <!-- Add your form items here... -->
+        <el-form-item label="课程名称" prop="courseName">
+          <el-input v-model="newCourse.courseName"></el-input>
+        </el-form-item>
+        <el-form-item label="课程描述" prop="courseDescription">
+          <el-input v-model="newCourse.courseDescription"></el-input>
+        </el-form-item>
+        <el-form-item label="开始时间" prop="courseStartTime">
+          <el-date-picker type="date" placeholder="选择日期" v-model="newCourse.courseStartTime"
+            style="width: 100%;"></el-date-picker>
+        </el-form-item>
+        <el-form-item label="结束时间" prop="courseEndTime">
+          <el-date-picker type="date" placeholder="选择日期" v-model="newCourse.courseEndTime"
+            style="width: 100%;"></el-date-picker>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showDialog = false">取消</el-button>
+        <el-button type="primary" @click="submitCourse">确定</el-button>
+      </span>
+    </el-dialog>
     <div style="width: 100%; display: flex;justify-content: center;">
 
       <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
-                     :page-sizes="[5, 10, 15, 20]" :page-size="pageSize" :total="total"
-                     layout="total, sizes, prev, pager, next, jumper"/>
+        :page-sizes="[5, 10, 15, 20]" :page-size="pageSize" :total="total"
+        layout="total, sizes, prev, pager, next, jumper" />
     </div>
 
   </div>
@@ -45,7 +69,14 @@ export default {
       pageSize: 5,
       total: 0,
       keyword: '',
-      tableData: []
+      tableData: [],
+      showDialog: false,
+      newCourse: {
+        courseName: '',
+        courseDescription: '',
+        courseStartTime: '',
+        courseEndTime: ''
+      }
     }
   },
   methods: {
@@ -59,29 +90,58 @@ export default {
     },
     queryCourses(currentPage, pageSize) {
       this.$axios
-      .post("/queryCourse", { pageNum: currentPage, pageSize: pageSize })
-      .then((res)=>{
-        this.tableData = res.data.courses;
-      })
+        .post("/queryCourse", { pageNum: currentPage, pageSize: pageSize })
+        .then((res) => {
+          this.tableData = res.data.courses;
+        })
     },
     deletes() {
       let rows = this.$refs['studentTable'].selection;
       let ids = '';
       for (let i = 0; i < rows.length; i++) {
-        ids += ',' + rows[i].empno;
+        ids += ',' + rows[i].courseId;
       }
       ids = ids.substring(1);   // 1,2,3,4,5,6....
-      this.$axios.get('/api/deletes?empnos=' + ids).then(result => {
+      this.$axios.post('/delEduInfo?CourseID=' + ids).then(result => {
         this.$message(result);
-        this.queryEmployees(1, this.pageSize);
+        this.queryCourses(1, this.pageSize);
       });
-
-    }
-
+    },
+    createCourse() {
+      this.showDialog = true;
+    },
+    submitCourse() {
+      // Call the API here...
+      // this.newCourse.courseStartTime = this.newCourse.courseStartTime.toLocaleDateString();
+      // this.newCourse.courseStartTime = this.newCourse.courseStartTime.replace(/\//g, '-');
+      // this.newCourse.courseEndTime = this.newCourse.courseEndTime.toLocaleDateString();
+      // this.newCourse.courseEndTime = this.newCourse.courseEndTime.replace(/\//g, '-');
+      console.log(this.newCourse);
+      this.$axios.post('/createEduInfo', this.newCourse)
+        .then(response => {
+          this.$message({
+            message: 'Course created successfully',
+            type: 'success'
+          });
+          this.newCourse = {
+            courseName: '',
+            courseDescription: '',
+            courseStartTime: '',
+            courseEndTime: ''
+          };
+          this.queryCourses(this.currentPage, this.pageSize);
+          this.showDialog = false;
+        })
+        .catch(error => {
+          this.$message({
+            message: 'Failed to create course',
+            type: 'error'
+          });
+          console.log(error);
+        });
+    },
   }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

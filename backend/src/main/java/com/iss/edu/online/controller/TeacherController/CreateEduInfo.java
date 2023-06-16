@@ -31,8 +31,11 @@ public class CreateEduInfo {
             Course course = new Course();
             course.setCourseName(map.get("courseName"));
             course.setCourseDescription(map.get("courseDescription"));
-            course.setCourseStartTime(LocalDate.parse(map.get("courseStartTime"), DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay());
-            course.setCourseEndTime(LocalDate.parse(map.get("courseEndTime"), DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay());
+//            course.setCourseStartTime(LocalDate.parse(map.get("courseStartTime"), DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay());
+//            course.setCourseEndTime(LocalDate.parse(map.get("courseEndTime"), DateTimeFormatter.ISO_LOCAL_DATE).atStartOfDay());
+            course.setCourseStartTime(LocalDateTime.parse(map.get("courseStartTime"), DateTimeFormatter.ISO_DATE_TIME));
+            course.setCourseEndTime(LocalDateTime.parse(map.get("courseEndTime"), DateTimeFormatter.ISO_DATE_TIME));
+
             String jwt = checkAdmin.extractJwt(authorization);
             // 从JWT中提取用户ID
             Claims claims = JwtUtil.parseJWT(jwt);

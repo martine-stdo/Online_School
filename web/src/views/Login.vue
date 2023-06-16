@@ -78,19 +78,6 @@ export default {
             let token = result.data.token;
             localStorage.setItem("token", 'Bearer ' + token);
 
-            // 发送 GET 请求获取用户信息
-            this.$axios.get('http://localhost:3001/user/info', )
-              .then(response => {
-                if (response.code === 200) {
-                  this.user = response.data; // 保存用户信息到组件的 user 对象
-                  localStorage.setItem("user", JSON.stringify(this.user));
-                } else {
-                  console.log('获取用户信息失败');
-                }
-              })
-              .catch(error => {
-                console.log('获取用户信息失败', error);
-              });
             this.$router.push("/main");
           } else {
             this.$notify.error({
