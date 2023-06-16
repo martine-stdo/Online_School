@@ -21,7 +21,7 @@ public class CreateEduInfo {
     @Autowired
     private UserDao userDao;
     @PostMapping ("/createEduInfo")
-    public ResultResponse createEduInfo(@RequestHeader("Authorization") String authorization, @RequestBody Map<String, String> map) throws Exception {
+    public ResultResponse createEduInfo(@RequestHeader("Access_token") String authorization, @RequestBody Map<String, String> map) throws Exception {
         if (checkAdmin.isAdmin(authorization)) {
             //前端需要传回的字段有
             //courseName
