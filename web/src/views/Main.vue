@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-carousel :interval="4000" type="card" height="240px">
-      <el-carousel-item v-for="(item, i) in courses.slice(0, 5)">
+      <el-carousel-item v-for="(item, i) in courses.slice(0, 5)" :key="item">
         <el-skeleton animated :loading="loading">
           <template slot="template">
             <el-skeleton-item variant="image" style="width: 100%; height: 240px" />
@@ -23,14 +23,14 @@
       <el-skeleton animated :loading="loading">
         <template slot="template">
           <div class="card-layout">
-            <el-card class="card" v-for="x in 8" :body-style="{ padding: '0px' }">
+            <el-card class="card" v-for="x in 8" :key="x" :body-style="{ padding: '0px' }">
               <el-skeleton-item variant="image" style="height: 180px" />
             </el-card>
           </div>
         </template>
         <template class="card-layout">
           <div class="card-layout">
-            <el-card class="card" v-for="x in courses" :body-style="{ padding: '0px' }">
+            <el-card class="card" v-for="x in courses" :key="x" :body-style="{ padding: '0px' }">
               <div class="background" style="width: 100%; height: 180px"
                 :style="`background:${extractColorByName(x.courseName)}`">
                 <div> {{ x.courseName }} </div>
