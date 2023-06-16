@@ -67,7 +67,7 @@
           </el-menu-item>
           <el-menu-item index="3" route="/admin" v-show="isAdmin">
             <i class="el-icon-data-analysis" />
-            <span slot="title">我的班级</span>
+            <span slot="title">课程管理</span>
           </el-menu-item>
         </el-menu>
       </el-aside>
